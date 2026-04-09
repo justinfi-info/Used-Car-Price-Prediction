@@ -9,8 +9,9 @@ import streamlit as st
 
 from car_model_pipeline import FeatureStats, prepare_single_input, train_and_select_best
 
-MODEL_PATH = Path("best_used_car_price_model.pkl")
-DATA_PATH = Path("used_cars.csv")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+MODEL_PATH = PROJECT_ROOT / "model" / "best_used_car_price_model.pkl"
+DATA_PATH = PROJECT_ROOT / "data" / "used_cars.csv"
 
 st.set_page_config(page_title="Used Car Price Prediction", page_icon="car", layout="wide")
 

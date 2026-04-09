@@ -21,6 +21,9 @@ from sklearn.svm import SVR
 CATEGORICAL_COLS = ["model_main", "fuel_type", "transmission", "ext_col", "int_col", "accident"]
 NUMERIC_COLS = ["milage", "HP", "Engine_size", "Cylinders", "car_age"]
 FEATURE_COLS = CATEGORICAL_COLS + NUMERIC_COLS
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_DATA_PATH = PROJECT_ROOT / "data" / "used_cars.csv"
+DEFAULT_ARTIFACT_PATH = PROJECT_ROOT / "model" / "best_used_car_price_model.pkl"
 
 
 @dataclass
@@ -238,8 +241,8 @@ def evaluate_price(y_true_price: pd.Series, y_pred_log: np.ndarray) -> dict[str,
 
 
 def train_and_select_best(
-    data_path: str | Path = "used_cars.csv",
-    artifact_path: str | Path = "best_used_car_price_model.pkl",
+    data_path: str | Path = DEFAULT_DATA_PATH,
+    artifact_path: str | Path = DEFAULT_ARTIFACT_PATH,
 ) -> dict[str, Any]:
     X_train, X_test, y_train_log, y_test_log, y_train_price, y_test_price, stats = prepare_train_test(data_path)
 
@@ -281,6 +284,8 @@ def train_and_select_best(
         "trained_at": datetime.now().isoformat(timespec="seconds"),
     }
 
+    artifact_path = Path(artifact_path)
+    artifact_path.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(artifact, artifact_path)
     return artifact
 

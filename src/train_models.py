@@ -6,8 +6,10 @@ from car_model_pipeline import train_and_select_best
 
 
 if __name__ == "__main__":
-    artifact_path = Path("best_used_car_price_model.pkl")
-    artifact = train_and_select_best(data_path="used_cars.csv", artifact_path=artifact_path)
+    project_root = Path(__file__).resolve().parents[1]
+    data_path = project_root / "data" / "used_cars.csv"
+    artifact_path = project_root / "model" / "best_used_car_price_model.pkl"
+    artifact = train_and_select_best(data_path=data_path, artifact_path=artifact_path)
 
     leaderboard = pd.DataFrame(artifact["leaderboard"])
     print("Best model:", artifact["model_name"])
